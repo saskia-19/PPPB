@@ -1,5 +1,6 @@
 package com.example.mycontactapp
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -9,6 +10,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.mycontactapp.auth.LoginActivity
 import com.example.mycontactapp.data.AppDatabase
 import com.example.mycontactapp.data.Contact
 import com.example.mycontactapp.data.ContactDao
@@ -17,6 +19,7 @@ import com.example.mycontactapp.databinding.FormContactBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import androidx.core.content.edit
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -43,6 +46,13 @@ class MainActivity : AppCompatActivity() {
             //show form
             btnAdd.setOnClickListener {
                 showAddDialog()
+            }
+
+            btnLogout.setOnClickListener {
+                val prefs = getSharedPreferences("UserPrefs", MODE_PRIVATE)
+                prefs.edit { putBoolean("isLoggedIn", false) }
+                startActivity(Intent(this@MainActivity, LoginActivity::class.java))
+                finish()
             }
         }
     }
